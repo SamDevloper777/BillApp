@@ -54,6 +54,7 @@
             }
         });
     </script>
+<x-admin.toster/>
 </body>
 
 </html>

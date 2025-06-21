@@ -1,41 +1,44 @@
-<div class="max-w-6xl mx-auto p-6 bg-white rounded shadow mt-10">
+<div>
+    <div class="max-w-6xl mx-auto p-6 bg-white rounded shadow mt-10">
 
     <!-- Modal -->
     @if($showModal)
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg w-full max-w-lg p-6 relative">
-                <h2 class="text-lg font-semibold mb-4">{{ $isEditing ? 'Edit Category' : 'Add Category' }}</h2>
+        <div class="fixed inset-0  bg-black/20 backdrop-blur-sm flex items-center justify-center z-50">
+            <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-8 relative">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">{{ $isEditing ? 'Edit Category' : 'Add Category' }}</h2>
 
-                <form wire:submit.prevent="save" class="space-y-4">
+                <form wire:submit.prevent="save" class="space-y-5">
                     <div>
-                        <label class="block text-gray-700 font-semibold">Name</label>
-                        <input type="text" wire:model="name" class="w-full border px-4 py-2 rounded">
-                        @error('name') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        <label class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" wire:model="name" class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label class="block text-gray-700 font-semibold">Parent Category</label>
-                        <select wire:model="parent_id" class="w-full border px-4 py-2 rounded">
+                        <label class="block text-sm font-medium text-gray-700">Parent Category</label>
+                        <select wire:model="parent_id" class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- None --</option>
                             @foreach($parents as $parent)
                                 <option value="{{ $parent->id }}">{{ $parent->name }}</option>
                             @endforeach
                         </select>
-                        @error('parent_id') <p class="text-red-500 text-sm">{{ $message }}</p> @enderror
+                        @error('parent_id') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
 
-                    <div>
-                        <label class="inline-flex items-center">
-                            <input type="checkbox" wire:model="status" class="form-checkbox">
-                            <span class="ml-2 text-gray-700">Active</span>
+                    <div class="flex items-center">
+                        <label class="flex items-center cursor-pointer">
+                            <div class="relative">
+                                <input type="checkbox" wire:model="status" class="sr-only">
+                                <div class="block bg-gray-300 w-14 h-8 rounded-full"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                            </div>
+                            <span class="ml-3 text-gray-700">Active</span>
                         </label>
                     </div>
 
-                    <div class="flex justify-end space-x-3 mt-4">
-                        <button type="button" wire:click="closeModal" class="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
-                            {{ $isEditing ? 'Update' : 'Save' }}
-                        </button>
+                    <div class="flex justify-end space-x-3 pt-4 border-t">
+                        <button type="button" wire:click="closeModal" class="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">{{ $isEditing ? 'Update' : 'Save' }}</button>
                     </div>
                 </form>
             </div>
@@ -43,42 +46,59 @@
     @endif
 
     <!-- Add Button -->
-    <div class="flex justify-end mb-4">
-        <button wire:click="openModal" class="px-4 py-2 bg-green-600 text-white rounded">+ Add Category</button>
+    <div class="flex justify-end mb-6">
+        <button wire:click="openModal" class="px-5 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition">+ Add Category</button>
     </div>
 
     <!-- Table -->
-    <table class="w-full border text-left">
-        <thead class="bg-gray-100">
-            <tr>
-                <th class="border px-4 py-2">ID</th>
-                <th class="border px-4 py-2">Name</th>
-                <th class="border px-4 py-2">Slug</th>
-                <th class="border px-4 py-2">Parent</th>
-                <th class="border px-4 py-2">Status</th>
-                <th class="border px-4 py-2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($categories as $category)
+    <div class="overflow-x-auto">
+        <table class="min-w-full border text-left text-sm">
+            <thead class="bg-gray-100">
                 <tr>
-                    <td class="border px-4 py-2">{{ $category->id }}</td>
-                    <td class="border px-4 py-2">{{ $category->name }}</td>
-                    <td class="border px-4 py-2">{{ $category->slug }}</td>
-                    <td class="border px-4 py-2">{{ $category->parent->name ?? '—' }}</td>
-                    <td class="border px-4 py-2">
-                        <span class="text-xs px-2 py-1 rounded {{ $category->status ? 'bg-green-200 text-green-700' : 'bg-red-200 text-red-700' }}">
-                            {{ $category->status ? 'Active' : 'Inactive' }}
-                        </span>
-                    </td>
-                    <td class="border px-4 py-2 space-x-2">
-                        <button wire:click="edit({{ $category->id }})" class="text-blue-600">Edit</button>
-                        <button wire:click="delete({{ $category->id }})" onclick="return confirm('Are you sure?')" class="text-red-600">Delete</button>
-                    </td>
+                    <th class="px-4 py-3 border">ID</th>
+                    <th class="px-4 py-3 border">Name</th>
+                    <th class="px-4 py-3 border">Slug</th>
+                    <th class="px-4 py-3 border">Parent</th>
+                    <th class="px-4 py-3 border">Status</th>
+                    <th class="px-4 py-3 border">Actions</th>
                 </tr>
-            @empty
-                <tr><td colspan="6" class="text-center py-4">No categories found.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @forelse($categories as $category)
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2 border">{{ $category->id }}</td>
+                        <td class="px-4 py-2 border font-medium">{{ $category->name }}</td>
+                        <td class="px-4 py-2 border text-gray-600">{{ $category->slug }}</td>
+                        <td class="px-4 py-2 border">{{ $category->parent->name ?? '—' }}</td>
+                        <td class="px-4 py-2 border">
+                            <label class="inline-flex relative items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" wire:click="toggleStatus({{ $category->id }})" {{ $category->status ? 'checked' : '' }}>
+                                <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-green-500 transition-all"></div>
+                                <div class="absolute left-0.5 top-0.5 bg-white w-5 h-5 rounded-full peer-checked:translate-x-full transition-transform"></div>
+                            </label>
+                        </td>
+                        <td class="px-4 py-2 border space-x-2">
+                            <button wire:click="edit({{ $category->id }})" class="text-blue-600 hover:underline">Edit</button>
+                            <button wire:click="delete({{ $category->id }})" onclick="return confirm('Are you sure?')" class="text-red-600 hover:underline">Delete</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center px-4 py-6 text-gray-500">No categories found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .dot {
+        transition: transform 0.3s ease-in-out;
+    }
+    input:checked ~ .dot {
+        transform: translateX(100%);
+    }
+</style>
+
 </div>
