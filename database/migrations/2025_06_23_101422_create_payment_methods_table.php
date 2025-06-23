@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('billing_id')->constrained()->onDelete('cascade');
+            $table->foreignId('billing_id');
             $table->string('payment_type'); // Cash, Card, UPI, etc.
             $table->decimal('amount', 12, 2);
             $table->timestamps();
