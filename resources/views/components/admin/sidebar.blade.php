@@ -34,7 +34,46 @@
             <span>Inventory</span>
         </a>
 
-        <a href="#"
+        {{-- Add more links according to web.php --}}
+        {{-- Example: Customers --}}
+        @if(Route::has('customers.index'))
+        <a href="{{ route('customers.index') }}"
+           class="flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
+           {{ request()->routeIs('customers.index') 
+                ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-100'
+                : 'text-gray-700 hover:bg-purple-50 hover:text-purple-600' }}">
+            <i class="fas fa-users text-lg"></i>
+            <span>Customers</span>
+        </a>
+        @endif
+
+        {{-- Example: Sales --}}
+        @if(Route::has('sales.index'))
+        <a href="{{ route('sales.index') }}"
+           class="flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
+           {{ request()->routeIs('sales.index') 
+                ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-100'
+                : 'text-gray-700 hover:bg-purple-50 hover:text-purple-600' }}">
+            <i class="fas fa-cash-register text-lg"></i>
+            <span>Sales</span>
+        </a>
+        @endif
+
+        {{-- Example: Users --}}
+        @if(Route::has('users.index'))
+        <a href="{{ route('users.index') }}"
+           class="flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
+           {{ request()->routeIs('users.index') 
+                ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-100'
+                : 'text-gray-700 hover:bg-purple-50 hover:text-purple-600' }}">
+            <i class="fas fa-user-cog text-lg"></i>
+            <span>Users</span>
+        </a>
+        @endif
+
+        {{-- Remove or update Reports if not in web.php --}}
+        {{-- @if(Route::has('reports.index'))
+        <a href="{{ route('reports.index') }}"
            class="flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
            {{ request()->routeIs('reports.*') 
                 ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-100'
@@ -42,6 +81,7 @@
             <i class="fas fa-chart-bar text-lg"></i>
             <span>Reports</span>
         </a>
+        @endif --}}
 
         <a href="{{ route('metal.index') }}"
            class="flex items-center space-x-3 px-4 py-3 rounded-xl font-medium transition-all duration-200
