@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-             $table->string('bill_no')->unique();
+            $table->string('bill_no')->unique();
             $table->foreignId('customer_id')->nullable()->constrained();
             $table->date('date');
             $table->decimal('total_amount', 12, 2);
             $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('final_amount', 12, 2);
-            $table->string('payment_type'); // Cash, Card, UPI
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Reverse the migrations.

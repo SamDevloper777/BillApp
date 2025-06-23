@@ -1,11 +1,13 @@
 <?php
 
+use App\Livewire\Admin\Billing\BillCreate;
 use App\Livewire\Admin\Category\CategoryCrud;
 use App\Livewire\Admin\Dashboard\Dashboard;
 use App\Livewire\Admin\Inventry\AddProduct;
 use App\Livewire\Admin\Inventry\ProductList;
 use App\Livewire\Admin\Inventry\UpdateProduct;
 use App\Livewire\Admin\Metal\MetalCrud;
+use App\Livewire\Admin\Supplier\SupplierList;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,3 +19,5 @@ Route::get('/metal',MetalCrud::class)->name('metal.index');
 Route::get('/products', ProductList::class)->name('products.index');
 Route::get('/products/create', AddProduct::class)->name('products.create');
 Route::get('/products/{id}/edit', UpdateProduct::class)->name('products.edit');
+Route::get('/suppliers', SupplierList::class)->name('suppliers.index');
+Route::get('billing',BillCreate::class)->name('billing.create');

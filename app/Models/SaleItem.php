@@ -15,4 +15,14 @@ class SaleItem extends Model
         'making_charge',
         'total_price',
     ];
+
+    public function billing()
+{
+    return $this->belongsTo(Sale::class);
+}
+
+public function product()
+{
+    return $this->belongsTo(Product::class);
+}
 }
